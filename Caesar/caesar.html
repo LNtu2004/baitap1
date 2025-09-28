@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Caesar Cipher</title>
+<style>
+body{font-family:Arial;max-width:700px;margin:30px;}
+h1{font-size:20px}
+label{display:block;margin:8px 0}
+input,button{padding:6px;font-size:14px}
+#result{margin-top:12px;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>Caesar Cipher</h1>
+
+<label>Chuỗi:
+  <input type="text" id="text" placeholder="Nhập plaintext hoặc ciphertext" size="50">
+</label>
+<label>Khóa k:
+  <input type="number" id="key" value="3">
+</label>
+
+<button onclick="doEncrypt()">Mã hóa</button>
+<button onclick="doDecrypt()">Giải mã</button>
+
+<p id="result"></p>
+
+<script>
+function caesarTransform(s,k,enc){
+  k = ((k%26)+26)%26;
+  var out = "";
+  for(var i=0;i<s.length;i++){
+    var ch = s[i];
+    if(/[A-Z]/.test(ch)){
+      var base = 65, code = s.charCodeAt(i)-base;
+      out += String.fromCharCode((enc? (code + k):(code - k + 26))%26 + base);
+    } else if(/[a-z]/.test(ch)){
+      var base = 97, code = s.charCodeAt(i)-base;
+      out += String.fromCharCode((enc? (code + k):(code - k + 26))%26 + base);
+    } else out += ch;
+  }
+  return out;
+}
+function doEncrypt(){
+  var s=document.getElementById('text').value;
+  var k=parseInt(document.getElementById('key').value)||0;
+  document.getElementById('result').innerText = "Bản mã: " + caesarTransform(s,k,true);
+}
+function doDecrypt(){
+  var s=document.getElementById('text').value;
+  var k=parseInt(document.getElementById('key').value)||0;
+  document.getElementById('result').innerText = "Giải mã: " + caesarTransform(s,k,false);
+}
+</script>
+</body>
+</html>

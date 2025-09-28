@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Affine Cipher</title>
+<style>
+body{font-family:Arial;max-width:700px;margin:30px;}
+h1{font-size:20px}
+label{display:block;margin:8px 0}
+input,button{padding:6px;font-size:14px}
+#result{margin-top:12px;font-weight:bold}
+small{color:#666}
+</style>
+</head>
+<body>
+<h1>Affine Cipher</h1>
+
+<label>Chuỗi:
+  <input type="text" id="text" size="50" placeholder="Nhập plaintext hoặc ciphertext">
+</label>
+<label>a (phải coprime với 26):
+  <input type="number" id="a" value="5">
+</label>
+<label>b:
+  <input type="number" id="b" value="8">
+  <small>Ví dụ a=1,b=3 tương đương Caesar dịch 3</small>
+</label>
+
+<button onclick="doEncrypt()">Mã hóa</button>
+<button onclick="doDecrypt()">Giải mã</button>
+
+<p id="result"></p>
+
+<script>
+function modInv(a,m){
+  a = ((a % m)+m)%m;
+  for(var x=1;x<m;x++) if((a*x)%m===1) return x;
+  return -1;
+}
+function affineEnc(s,a,b){
+  var out="";
+  for(var i=0;i<s.length;i++){
+    var ch=s[i];
+    if(/[A-Z]/.test(ch)){
+      var x = ch.charCodeAt(0)-65;
+      out += String.fromCharCode(((a*x + b)%26 +26)%26 + 65);
+    } else if(/[a-z]/.test(ch)){
+      var x = ch.charCodeAt(0)-97;
+      out += String.fromCharCode(((a*x + b)%26 +26)%26 + 97);
+    } else out += ch;
+  }
+  return out;
+}
+function affineDec(s,a,b){
+  var inv = modInv(a,26);
+  if(inv===-1) return "ERROR: a không có nghịch đảo mod26";
+  var out="";
+  for(var i=0;i<s.length;i++){
+    var ch=s[i];
+    if(/[A-Z]/.test(ch)){
+      var y = ch.charCodeAt(0)-65;
+      var x = (inv * ((y - b + 26)%26))%26;
+      out += String.fromCharCode(x + 65);
+    } else if(/[a-z]/.test(ch)){
+      var y = ch.charCodeAt(0)-97;
+      var x = (inv * ((y - b + 26)%26))%26;
+      out += String.fromCharCode(x + 97);
+    } else out += ch;
+  }
+  return out;
+}
+function doEncrypt(){
+  var s=document.getElementById('text').value;
+  var a=parseInt(document.getElementById('a').value);
+  var b=parseInt(document.getElementById('b').value);
+  document.getElementById('result').innerText = "Bản mã: " + affineEnc(s,a,b);
+}
+function doDecrypt(){
+  var s=document.getElementById('text').value;
+  var a=parseInt(document.getElementById('a').value);
+  var b=parseInt(document.getElementById('b').value);
+  document.getElementById('result').innerText = "Giải mã: " + affineDec(s,a,b);
+}
+</script>
+</body>
+</html>

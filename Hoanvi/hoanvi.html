@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Permutation Cipher</title>
+<style>
+body{font-family:Arial;max-width:700px;margin:30px;}
+h1{font-size:20px}
+label{display:block;margin:8px 0}
+input,button{padding:6px;font-size:14px}
+#result{margin-top:12px;font-weight:bold}
+small{color:#666}
+</style>
+</head>
+<body>
+<h1>Permutation Cipher (block)</h1>
+
+<label>Chuỗi (khoảng trắng giữ nguyên):
+  <input type="text" id="text" size="60" placeholder="Ví dụ: hello">
+</label>
+<label>Khóa (nhập chỉ số 0-based, cách nhau khoảng trắng):
+  <input type="text" id="key" size="30" value="2 1 0 4 3">
+  <small>VD block size = 5 với key "2 1 0 4 3"</small>
+</label>
+
+<button onclick="doEncrypt()">Mã hóa</button>
+<button onclick="doDecrypt()">Giải mã</button>
+
+<p id="result"></p>
+
+<script>
+function parseKey(s){
+  if(!s.trim()) return [];
+  return s.trim().split(/\s+/).map(function(x){return parseInt(x,10);});
+}
+function padRight(s,n,ch){ while(s.length % n !== 0) s += ch; return s; }
+
+function doEncrypt(){
+  var t=document.getElementById('text').value;
+  var key=parseKey(document.getElementById('key').value);
+  if(key.length===0){ document.getElementById('result').innerText="Nhập khóa hợp lệ!"; return;}
+  var n = key.length;
+  var text = t.replace(/\s/g,''); // nếu bạn muốn bỏ khoảng trắng; nếu không, comment dòng này
+  text = padRight(text,n,'X');
+  var out = "";
+  for(var i=0;i<text.length;i+=n){
+    var block=text.substr(i,n);
+    for(var j=0;j<n;j++){
+      out += block[key[j]];
+    }
+  }
+  document.getElementById('result').innerText = "Bản mã: " + out;
+}
+
+function doDecrypt(){
+  var t=document.getElementById('text').value;
+  var key=parseKey(document.getElementById('key').value);
+  if(key.length===0){ document.getElementById('result').innerText="Nhập khóa hợp lệ!"; return;}
+  var n = key.length;
+  var text = t.replace(/\s/g,'');
+  text = padRight(text,n,'X');
+  var inv = new Array(n);
+  for(var i=0;i<n;i++) inv[key[i]] = i;
+  var out = "";
+  for(var i=0;i<text.length;i+=n){
+    var block = text.substr(i,n);
+    var plainBlock = new Array(n);
+    for(var j=0;j<n;j++) plainBlock[inv[j]] = block[j];
+    out += plainBlock.join('');
+  }
+  document.getElementById('result').innerText = "Bản gốc: " + out;
+}
+</script>
+</body>
+</html>
