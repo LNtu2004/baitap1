@@ -2,6 +2,7 @@
 # Lê Ngọc Tú msv k225480106069
 # 1. Caesar
  mã hóa   P → C = (P + k) mod 26
+ 
  giải mã  P = (C − k + 26) mod 26
  Không gian khoá : Tổng 25 khả năng thực tế.
  Cách phá mã (không cần khoá)
