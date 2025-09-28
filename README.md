@@ -2,7 +2,6 @@
 # Lê Ngọc Tú msv k225480106069
 # 1. Caesar
  mã hóa   P → C = (P + k) mod 26
- 
  giải mã  P = (C − k + 26) mod 26
  Không gian khoá : Tổng 25 khả năng thực tế.
  Cách phá mã (không cần khoá)
@@ -39,3 +38,31 @@ c++
 <img width="974" height="457" alt="image" src="https://github.com/user-attachments/assets/ee5ebace-b8e5-4537-a1f7-95cf2c3ff8c4" />
 html+css+js
 <img width="1185" height="495" alt="image" src="https://github.com/user-attachments/assets/e3470203-76e0-42af-90d2-d97da4337926" />
+# 4 Vigenere -  mã hoá theo chuỗi khóa
+Khoá: từ khóa K dài m (chuỗi chữ A–Z).
+mã hoá P ( 0...25) K-> C = ( P + K ) mod26
+giải mã P = ( C - K + 26 ) mod26
+Không gian khoá 26^m khả năng
+Cách phá mã (không cần khóa)
+Phân tích Kasiski, Friedman, thống kê tần suất bậc cao
+c++ 
+<img width="976" height="450" alt="image" src="https://github.com/user-attachments/assets/296ba38d-50b2-4b71-956a-5cb42dc53925" />
+html+css+js
+<img width="1266" height="505" alt="image" src="https://github.com/user-attachments/assets/15b365db-f2f0-4acb-a525-fb62d7d16ddb" />
+# 5 Playfair - substitution theo cặp (digraph cipher) dùng ma trận 5×5.
+mã hoá 
+Tạo bảng 5×5 từ khóa: viết các chữ cái của key (loại bỏ chữ trùng lặp), sau đó viết lần lượt các chữ cái còn lại (thường hợp gộp I/J vào 1 ô).
+giải mã 
+làm ngược lại (bên trái / trên) cho trường hợp hàng/cột.
+Không gian khoá 
+25!
+Cách phá mã
+Phân tích digraphs: tần suất digraph khác với monoalphabetic.
+
+Brute force với từ khoá ngắn (dictionary attack).
+
+Heuristic / hill-climbing như dùng simulated annealing hoặc genetic algorithm để tối ưu bảng 5×5 dựa trên scoring bằng mô hình ngôn ngữ (n-gram).
+c++
+<img width="964" height="413" alt="image" src="https://github.com/user-attachments/assets/8b2b1200-2b7c-4fb0-a346-129b04fe9e04" />
+html+css+js
+<img width="1050" height="550" alt="image" src="https://github.com/user-attachments/assets/0c9bf3cb-98a0-4747-b39b-a015c91b9ee2" />
